@@ -1,0 +1,44 @@
+function doGet(e) {
+  // リクエストからパラメータを取得
+  console.log("start GPTs Custom Actions API test");
+  console.log("e: " + JSON.stringify(e));
+  var searchQuery = e.parameter.id;
+  console.log("e.parameter.id: " + e.parameter.id);
+
+  // 4桁の数字かどうかをチェック
+  if (!searchQuery || !/^\d{4}$/.test(searchQuery)) {
+    console.log("bad format: " + searchQuery);
+    return ContentService.createTextOutput(
+      JSON.stringify({ "error": "Invalid request. Please provide a 4-digit number." })
+    ).setMimeType(ContentService.MimeType.JSON);
+  }
+
+  // スプレッドシートの準備
+  var sheet = SpreadsheetApp.openById('1EHAW4qE-Y40tQiKCawVpZBlphyLHuINWXgh6iFSXp-Y').getSheetByName('シート1');
+  var data = sheet.getDataRange().getValues();
+  console.log("format OK");
+
+  // スプレッドシートを検索
+  for (var i = 1; i < data.length; i++) {  // 2行目から開始
+    if (data[i][0].toString() === searchQuery) {
+      console.log("hit: " + i);
+      // 見つかった場合、JSONとして返す
+      return ContentService.createTextOutput(
+        JSON.stringify({
+          "No": data[i][0],
+          "Date": data[i][1],
+          "Name": data[i][2],
+          "Tag": data[i][3],
+          "Memo": data[i][4],
+          "All": data[i][5]
+          // 必要に応じてさらに追加
+        })
+      ).setMimeType(ContentService.MimeType.JSON);
+    }
+  }
+  console.log("not found");
+  // 一致するデータが見つからない場合
+  return ContentService.createTextOutput(
+    JSON.stringify({ "error": "No data found for the provided number." })
+  ).setMimeType(ContentService.MimeType.JSON);
+}
