@@ -1,0 +1,48 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Get name data",
+    "description": "Get lastname and firstname by id",
+    "version": "v1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://script.google.com"
+    }
+  ],
+  "paths": {
+    "/macros/s/AKfycbxa7DWjUsu2uB8BXeZiXCOswADlt4c7MrODwh-gRNQV1Sn4GZ1FqTasnLTEYzB5rib2oQ/exec": {
+      "get": {
+        "description": "Get lastname and firstname by id",
+        "operationId": "GetNameByid",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "ID No.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "deprecated": false
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "NameResponse": {
+        "type": "object",
+        "properties": {
+          "lastname": {
+            "type": "string"
+          },
+          "firstname": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
