@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Get name data",
-    "description": "Get lastname and firstname by id",
+    "title": "Search and Add Posts",
+    "description": "Search posts by keyword and add new posts.",
     "version": "v1.0.0"
   },
   "servers": [
@@ -13,33 +13,119 @@
   "paths": {
     "/macros/s/AKfycbxa7DWjUsu2uB8BXeZiXCOswADlt4c7MrODwh-gRNQV1Sn4GZ1FqTasnLTEYzB5rib2oQ/exec": {
       "get": {
-        "description": "Get lastname and firstname by id",
-        "operationId": "GetNameByid",
+        "description": "Search posts by keyword and return details.",
+        "operationId": "searchPostsByKeyword",
         "parameters": [
           {
-            "name": "id",
+            "name": "keyword",
             "in": "query",
-            "description": "ID No.",
+            "description": "Keyword to search in the content.",
             "required": true,
             "schema": {
               "type": "string"
             }
           }
         ],
-        "deprecated": false
+        "responses": {
+          "200": {
+            "description": "A list of posts containing the keyword.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PostResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request, such as missing keyword."
+          }
+        }
+      },
+      "post": {
+        "description": "Add a new post to the spreadsheet.",
+        "operationId": "addPost",
+        "requestBody": {
+          "description": "Data for the new post",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewPostRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Post successfully added.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "result": {
+                      "type": "string",
+                      "description": "Result of the operation"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Operation message"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request, such as missing required fields."
+          }
+        }
       }
     }
   },
   "components": {
     "schemas": {
-      "NameResponse": {
+      "PostResponse": {
         "type": "object",
         "properties": {
-          "lastname": {
-            "type": "string"
+          "No": {
+            "type": "integer",
+            "description": "Unique identifier of the post."
           },
-          "firstname": {
-            "type": "string"
+          "All": {
+            "type": "string",
+            "description": "All contents."
+          }
+        }
+      },
+      "NewPostRequest": {
+        "type": "object",
+        "required": ["Date", "Name", "Tag", "Memo", "All"],
+        "properties": {
+          "Date": {
+            "type": "string",
+            "format": "date",
+            "description": "Date when the post was made."
+          },
+          "Name": {
+            "type": "string",
+            "description": "Name of the person who made the post."
+          },
+          "Tag": {
+            "type": "string",
+            "description": "Tag related to the post."
+          },
+          "Memo": {
+            "type": "string",
+            "description": "Memo content of the post."
+          },
+          "All": {
+            "type": "string",
+            "description": "All contents."
           }
         }
       }
