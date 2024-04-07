@@ -2,8 +2,9 @@ function doGet(e) {
   // リクエストからパラメータを取得
   console.log("start GPTs Custom Actions API test");
   console.log("e: " + JSON.stringify(e));
-  var searchQuery = e.parameter.id;
-  console.log("e.parameter.id: " + e.parameter.id);
+  var searchQuery = e.parameter.keyword; // 'id'から'keyword'に変更
+console.log("e.parameter.keyword: " + e.parameter.keyword); // ログの出力を変更
+
 
   // 4桁の数字かどうかをチェック
   if (!searchQuery || !/^\d{4}$/.test(searchQuery)) {
