@@ -96,15 +96,11 @@
             "type": "integer",
             "description": "Unique identifier of the post."
           },
-          "All": {
-            "type": "string",
-            "description": "All contents."
-          }
         }
       },
       "NewPostRequest": {
         "type": "object",
-        "required": ["Date", "Name", "Tag", "Memo", "All"],
+        "required": ["Date", "Name", "Tag", "Memo",],
         "properties": {
           "Date": {
             "type": "string",
@@ -123,10 +119,6 @@
             "type": "string",
             "description": "Memo content of the post."
           },
-          "All": {
-            "type": "string",
-            "description": "All contents."
-          }
         }
       }
     }
