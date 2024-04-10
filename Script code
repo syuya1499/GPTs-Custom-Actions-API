@@ -1,3 +1,29 @@
+function doPost(e) {
+  // リクエストボディからJSONデータを解析
+  var requestData = JSON.parse(e.postData.contents);
+
+  // スプレッドシートの準備
+  var sheet = SpreadsheetApp.openById('1EHAW4qE-Y40tQiKCawVpZBlphyLHuINWXgh6iFSXp-Y').getSheetByName('シート1');
+
+  // 最終行の"No"を取得して1を加える
+  var lastRow = sheet.getLastRow();
+  var lastNo = sheet.getRange(lastRow, 1).getValue(); // "No"は1列目にあると仮定
+  var newNo = lastNo + 1;
+
+  // 新しい行にデータを追加
+  var newRow = lastRow + 1;
+  sheet.getRange(newRow, 1).setValue(newNo); // 新しい"No"を1列目に設定
+  sheet.getRange(newRow, 2).setValue(requestData.Date); // 2列目にDate
+  sheet.getRange(newRow, 3).setValue(requestData.Name); // 3列目にName
+  sheet.getRange(newRow, 4).setValue(requestData.Tag); // 4列目にTag
+  sheet.getRange(newRow, 5).setValue(requestData.Memo); // 5列目にMemo
+
+  // 処理完了のメッセージを返す
+  return ContentService.createTextOutput(
+    JSON.stringify({"result": "Success", "message": "Data added to the spreadsheet."})
+  ).setMimeType(ContentService.MimeType.JSON);
+}
+
 function doGet(e) {
   // リクエストからキーワードパラメータを取得
   console.log("start GPTs Custom Actions API test");
@@ -22,7 +48,6 @@ function doGet(e) {
         "Name": data[i][2],
         "Tag": data[i][3],
         "Memo": data[i][4],
-        "All": data[i][5]
       });
     }
   }
